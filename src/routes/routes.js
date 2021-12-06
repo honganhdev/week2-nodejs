@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const bookHandler = require("../handlers/books/bookHandlers");
 const productHandler = require("../handlers/products/productHandler");
+const todoHandler = require("../handlers/todos/todoHandler");
 const bookInputMiddleware = require("../middleware/bookInputMiddleware");
 const productInputMiddleware = require("../middleware/productInputMiddleware");
 
@@ -24,5 +25,12 @@ router.put(
 );
 router.delete("/products/:id", productHandler.deleteProduct);
 router.get("/products/:id", productHandler.getProductById);
+
+//Router todo
+router.get("/todos", todoHandler.getTodos);
+router.post("/todos", todoHandler.saveTodo);
+router.patch("/todos/:id", todoHandler.updateTodos);
+router.delete("/todos/:id", todoHandler.deleteTodo);
+// router.get("/todos/:id", todosHandler.getProductById);
 
 module.exports = router;

@@ -69,7 +69,7 @@ async function updateProductById(ctx) {
         success: false,
       });
     } else {
-      ctx.status = 201;
+      ctx.status = 200;
       return (ctx.body = {
         success: true,
       });
@@ -95,7 +95,7 @@ async function deleteProduct(ctx) {
         success: false,
       });
     } else {
-      ctx.status = 201;
+      ctx.status = 200;
       return (ctx.body = {
         success: true,
       });
@@ -116,7 +116,7 @@ async function deleteProduct(ctx) {
 
 async function getProductById(ctx) {
   try {
-    const fields = ctx.query.fields.split(",");
+    const fields = ctx.query.fields;
     const { id } = ctx.params;
     const product = getProduct({ fields, id });
     if (product === false) {

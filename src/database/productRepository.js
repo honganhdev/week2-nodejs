@@ -91,8 +91,11 @@ function get({ fields, id }) {
     if (product.id === parseInt(id)) return product;
   });
   if (!product) return false;
-  const result = pick(product, fields);
-  console.log(result);
+  let result = product;
+  if (fields) {
+    const field = fields.split(",");
+    result = pick(product, field);
+  }
   return result;
 }
 module.exports = {
