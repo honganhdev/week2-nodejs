@@ -35,36 +35,45 @@ function add(data) {
  *
  * @returns {[{text: string,  id: number},{text: string,  id: number},{text: string,  id: number} ]}
  */
-function del(id) {
-  const todo = todos.find((todo) => {
-    if (todo.id === parseInt(id)) return todo;
+function del({ ids }) {
+  let returnData = [];
+  ids.map((id) => {
+    const todo = todos.find((todo) => {
+      if (todo.id === parseInt(id)) return todo;
+    });
+    if (!todo) return false;
+
+    todos.splice(todos.indexOf(todo), 1);
+    fs.writeFileSync(
+      "./src/database/todo.json",
+      JSON.stringify({
+        data: todos,
+      })
+    );
+    returnData = [...returnData, todo];
   });
-  if (!todo) return false;
-  todos.splice(todos.indexOf(todo), 1);
-  fs.writeFileSync(
-    "./src/database/todo.json",
-    JSON.stringify({
-      data: todos,
-    })
-  );
-  return todo;
+  return returnData;
 }
 /**
  *
  * @returns {[{text: string,  id: number},{text: string,  id: number},{text: string,  id: number} ]}
  */
 
-function update({ data, id }) {
-  id = parseInt(id);
-  console.log("data", data, id);
-  const todo = todos.find((todo) => {
-    if (todo.id === parseInt(id)) return todo;
-  });
-  if (!todo) return false;
-  const updateData = { ...todo, ...data };
-  const updatedTodos = todos.map((todoItem) => {
-    if (id === todoItem.id) return updateData;
-    return todoItem;
+function update({ data, ids }) {
+  let returnData = [];
+  let updatedTodos = todos;
+  ids.map((id) => {
+    const todo = todos.find((todo) => {
+      if (todo.id === id) return todo;
+    });
+    if (!todo) return false;
+    const updateData = { ...todo, ...data };
+    console.log(updateData);
+    updatedTodos = updatedTodos.map((todoItem) => {
+      if (id === todoItem.id) return updateData;
+      return todoItem;
+    });
+    returnData = [...returnData, updateData];
   });
 
   fs.writeFileSync(
@@ -73,7 +82,7 @@ function update({ data, id }) {
       data: updatedTodos,
     })
   );
-  return updateData;
+  return returnData;
 }
 
 module.exports = {

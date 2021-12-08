@@ -2,10 +2,10 @@ var faker = require("faker");
 var fs = require("fs");
 
 let products = [];
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 20; i++) {
   products.push({
     id: faker.datatype.number(),
-    text: faker.lorem.lines(),
+    text: faker.random.words(),
     isCompleted: faker.datatype.boolean(),
   });
 }

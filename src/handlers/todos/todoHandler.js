@@ -58,8 +58,11 @@ async function saveTodo(ctx) {
 
 async function deleteTodo(ctx) {
   try {
-    const { id } = ctx.params;
-    const del = delTodo(id);
+    const nonValid = ctx.params.id;
+    const validateId = nonValid
+      .split(",")
+      .map((item) => (item = parseInt(item)));
+    const del = delTodo({ ids: validateId });
     if (del === false) {
       return (ctx.body = {
         success: false,
@@ -87,10 +90,14 @@ async function deleteTodo(ctx) {
 
 async function updateTodos(ctx) {
   try {
-    const { id } = ctx.params;
+    const nonValid = ctx.params.id;
     const postData = ctx.request.body;
+    const validateId = nonValid
+      .split(",")
+      .map((item) => (item = parseInt(item)));
 
-    const dataUpdated = updateTodo({ data: postData, id });
+    const dataUpdated = updateTodo({ data: postData, ids: validateId });
+    console.log(dataUpdated);
     ctx.status = 200;
     return (ctx.body = {
       success: true,
